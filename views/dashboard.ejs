@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Movie Recommendation System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/src/public/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/logout">Logout</a>
+    </nav>
+    <div class="center-container">
+        <h1 id="welcome"></h1>
+        <h2>All Movies</h2>
+        <div id="movieList" style="width:100%;max-width:700px;margin:auto;"></div>
+    </div>
+    <script>
+        // Decode JWT to get userName
+        function parseJwt(token) {
+            try {
+                return JSON.parse(atob(token.split('.')[1]));
+            } catch (e) { return {}; }
+        }
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = "/";
+        } else {
+            const payload = parseJwt(token);
+            document.getElementById('welcome').innerText = "Welcome, " + (payload.userName || "User") + "!";
+            fetch('/api/movies', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                return res.json();
+            })
+            .then(movies => {
+                const list = document.getElementById('movieList');
+                if (!movies.length) {
+                    list.innerHTML = "<p>No movies found.</p>";
+                    return;
+                }
+                list.innerHTML = movies.map(m =>
+                    `<div class="movie-card" data-id="${m.m_id}" style="background:#232323cc;padding:1rem;margin:1rem 0;border-radius:8px;cursor:pointer;">
+                        <h3 style="margin:0 0 0.5rem 0;">${m.movie_title}</h3>
+                        <p style="margin:0 0 0.5rem 0;">${m.movie_desc || ""}</p>
+                        <small>Category: ${m.movie_category || "N/A"} | Language: ${m.movie_language || "N/A"}</small>
+                    </div>`
+                ).join('');
+                // Add click event for each movie card
+                document.querySelectorAll('.movie-card').forEach(function(card) {
+                    card.onclick = function() {
+                        window.location.href = "/movie/" + card.getAttribute('data-id');
+                    };
+                });
+            })
+            .catch((err) => {
+                document.getElementById('movieList').innerHTML = "<p style='color:red;'>Failed to load movies.<br>" + err + "</p>";
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= movie.movie_title %> - Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/src/public/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/logout">Logout</a>
+    </nav>
+    <div class="center-container">
+        <div class="main-title"><%= movie.movie_title %></div>
+        <div style="background:#232323cc;padding:2rem;border-radius:12px;max-width:600px;">
+            <p><strong>Description:</strong> <%= movie.movie_desc %></p>
+            <p><strong>Category:</strong> <%= movie.movie_category %></p>
+            <p><strong>Language:</strong> <%= movie.movie_language %></p>
+            <p><strong>Director:</strong> <%= movie.movie_director_name %></p>
+            <p><strong>Actors:</strong> <%= movie.movie_actor_1 %>, <%= movie.movie_actor_2 %>, <%= movie.movie_actor_3 %></p>
+            <p><strong>Release Date:</strong> <%= movie.movie_release_date ? movie.movie_release_date.toISOString().slice(0,10) : "N/A" %></p>
+            <p><strong>Country:</strong> <%= movie.movie_country %></p>
+            <button onclick="alert('Rating functionality coming soon!')">Rate</button>
+            <button onclick="alert('Watchlist functionality coming soon!')">Add to Watchlist</button>
+        </div>
+    </div>
+    <script>
+        // Redirect to login if not logged in
+        if (!localStorage.getItem('token')) {
+            window.location.href = "/login";
+        }
+    </script>
+</body>
+</html>

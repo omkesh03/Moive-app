@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Movie Recommendation System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/src/public/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/register">Register</a>
+        <a href="/login" style="color:#ff9800;">Login</a>
+    </nav>
+    <div class="center-container">
+        <div class="main-title">Login</div>
+        <form class="login-form" id="loginForm">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <button type="submit">Login</button>
+            <div style="margin-top: 1rem; text-align: right; width: 100%;">
+                <a href="/forgetpassword" style="color:#ff9800;">Forgot Password?</a>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('loginForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (res.ok && data.token) {
+                localStorage.setItem('token', data.token);
+                window.location.href = "/dashboard";
+            } else {
+                alert(data.error || "Login failed");
+            }
+        };
+    </script>
+</body>
+</html>

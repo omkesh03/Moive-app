@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    /* Attractive animated gradient background */
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #ff512f 100%);
+    background-size: 200% 200%;
+    animation: gradientBG 8s ease-in-out infinite;
+    color: #fff;
+    min-height: 100vh;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.navbar {
+    width: 100%;
+    background: #1c1c1c;
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+}
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 2rem;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+.navbar a:hover {
+    color: #ff9800;
+}
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+.main-title {
+    font-size: 2.7rem;
+    font-weight: bold;
+    margin-bottom: 2.5rem;
+    letter-spacing: 2px;
+    text-align: center;
+    text-shadow: 2px 2px 8px rgba(30,60,114,0.2);
+}
+.login-form {
+    background: #232323cc;
+    padding: 2.5rem 2rem 2rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+    width: 340px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+.login-form h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    color: #ff9800;
+}
+.login-form label {
+    align-self: flex-start;
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+}
+.login-form input {
+    width: 100%;
+    padding: 0.7rem;
+    margin-bottom: 1.2rem;
+    border: none;
+    border-radius: 6px;
+    background: #333;
+    color: #fff;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+.login-form input:focus {
+    outline: 2px solid #ff9800;
+}
+.login-form button {
+    width: 100%;
+    background: #ff9800;
+    color: #fff;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.login-form button:hover {
+    background: #e65100;
+}
+@media (max-width: 600px) {
+    .main-title {
+        font-size: 2rem;
+    }
+    .login-form {
+        padding: 1.5rem 0.5rem;
+        width: 98vw;
+    }
+}

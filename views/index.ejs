@@ -1,0 +1,45 @@
+<!-- filepath: views/home.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Recommendation System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="src/public/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+    </nav>
+    <div class="center-container">
+        <div class="main-title">Movie Recommendation System</div>
+        <div id="movieList" style="width:100%;max-width:700px;margin:auto;">
+            <% movies.forEach(function(m) { %>
+                <div class="movie-card" data-id="<%= m.m_id %>" style="background:#232323cc;padding:1rem;margin:1rem 0;border-radius:8px;cursor:pointer;">
+                    <h3 style="margin:0 0 0.5rem 0;"><%= m.movie_title %></h3>
+                    <p style="margin:0 0 0.5rem 0;"><%= m.movie_desc || "" %></p>
+                    <small>Category: <%= m.movie_category || "N/A" %> | Language: <%= m.movie_language || "N/A" %></small>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.movie-card').forEach(function(card) {
+            card.onclick = function(e) {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert("User need to login first");
+                } else {
+                    window.location.href = "/movie/" + card.getAttribute('data-id');
+                }
+            };
+        });
+    </script>
+    <% if (typeof alert !== "undefined" && alert) { %>
+        <script>
+            alert("<%= alert %>");
+        </script>
+    <% } %>
+</body>
+</html>
