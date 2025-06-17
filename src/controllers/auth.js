@@ -4,7 +4,7 @@ const SECRET = "your_jwt_secret"; // Use env in production
 
 // Handle registration POST
 exports.register = (req, res) => {
-    const { name, email, mobile, password } = req.body;
+    const { name, email, mobile, city, password } = req.body;
     // Check if user already exists
     User.findByEmail(email, (err, results) => {
         if (err) {
@@ -16,13 +16,13 @@ exports.register = (req, res) => {
             return res.render("register", { error: null, alert: "Email already registered" });
         }
         // Create user
-        User.createUser({ name, email, mobile, password }, (err2) => {
+        User.createUser({ name, email, mobile, city, password }, (err2) => {
             if (err2) {
                 // Registration failed, show popup
                 return res.render("register", { error: null, alert: "Registration failed. Please try again." });
             }
             // Registration successful, redirect to login with popup
-            res.render("index", { error: null, alert: "Registration successful! Please login." });
+            res.render("login", { alert: "Registration successful! Please login." });
         });
     });
 };

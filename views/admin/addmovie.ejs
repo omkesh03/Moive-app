@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Movie - Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/src/public/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <span style="margin-right:auto;color:#ff9800;">Admin: <%= adminName %></span>
+        <a href="/admin/movies">All Movies</a>
+        <a href="/admin/logout">Logout</a>
+    </nav>
+    <div class="center-container">
+        <div class="main-title">Add Movie</div>
+        <% if (alert) { %>
+            <div style="color: #ff9800; margin-bottom: 1rem;"><%= alert %></div>
+        <% } %>
+        <form class="login-form" action="/admin/movieinfo/add" method="POST">
+            <label>Title</label>
+            <input type="text" name="movie_title" required>
+            <label>Mapping Name</label>
+            <input type="text" name="movie_mapping_name">
+            <label>Description</label>
+            <textarea name="movie_desc" rows="3"></textarea>
+            <label>Category</label>
+            <input type="text" name="movie_category">
+            <label>Director</label>
+            <input type="text" name="movie_director_name">
+            <label>Actor 1</label>
+            <input type="text" name="movie_actor_1">
+            <label>Actor 2</label>
+            <input type="text" name="movie_actor_2">
+            <label>Actor 3</label>
+            <input type="text" name="movie_actor_3">
+            <label>Language</label>
+            <input type="text" name="movie_language">
+            <label>Type</label>
+            <input type="text" name="movie_type">
+            <label>Trailer Link</label>
+            <input type="text" name="movie_trailer_link">
+            <label>Watch Link</label>
+            <input type="text" name="movie_watch_link">
+            <label>Budget</label>
+            <input type="text" name="movie_budget">
+            <label>Release Date</label>
+            <input type="date" name="movie_release_date">
+            <label>Country</label>
+            <input type="text" name="movie_country">
+            <label>Image URL</label>
+            <input type="text" name="movie_image">
+            <button type="submit">Add Movie</button>
+        </form>
+    </div>
+</body>
+</html>

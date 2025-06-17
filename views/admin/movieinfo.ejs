@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Movies - Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/src/public/style.css">
+    <style>
+        table {
+            width: 100%;
+            max-width: 1100px;
+            margin: 2rem auto;
+            border-collapse: collapse;
+            background: #232323cc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid #444;
+            text-align: left;
+        }
+        th {
+            background: #1c1c1c;
+            color: #ff9800;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .movie-img-thumb {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #222;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <span style="margin-right:auto;color:#ff9800;">Admin: <%= adminName %></span>
+        <a href="/admin/users">All Users</a>
+        <a href="/admin/movieinfo" style="color:#ff9800;">All Movies</a>
+        <a href="/admin/logout">Logout</a>
+    </nav>
+    <div class="center-container">
+        <div class="main-title">All Movies</div>
+        <% if (movieAlert) { %>
+            <div style="color: #ff9800; margin-bottom: 1rem;"><%= movieAlert %></div>
+        <% } %>
+        <div style="text-align:right;max-width:1100px;margin:auto;">
+            <a href="/admin/movieinfo/add" style="background:#ff9800;color:#fff;padding:0.7rem 1.5rem;border-radius:6px;text-decoration:none;font-weight:bold;">Add Movie</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Language</th>
+                    <th>Director</th>
+                    <th>Release Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% movies.forEach(function(m) { %>
+                    <tr>
+                        <td>
+                            <img class="movie-img-thumb" src="<%= m.movie_image || '/src/public/default-movie.png' %>" alt="Movie Image" onerror="this.src='/src/public/default-movie.png'">
+                        </td>
+                        <td><%= m.movie_title %></td>
+                        <td><%= m.movie_category %></td>
+                        <td><%= m.movie_language %></td>
+                        <td><%= m.movie_director_name %></td>
+                        <td><%= m.movie_release_date ? m.movie_release_date.toISOString().slice(0,10) : "" %></td>
+                        <td>
+                            <a href="/admin/movieinfo/edit/<%= m.m_id %>" style="background:#1e88e5;color:#fff;padding:0.4rem 1rem;border-radius:5px;text-decoration:none;">Edit</a>
+                            <form action="/admin/movieinfo/delete/<%= m.m_id %>" method="POST" style="display:inline;" class="delete-movie-form">
+                                <button type="submit" style="background:#e65100;color:#fff;border:none;padding:0.4rem 1rem;border-radius:5px;cursor:pointer;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.querySelectorAll('.delete-movie-form').forEach(function(form) {
+            form.onsubmit = function(e) {
+                if (!confirm('Are you sure you want to delete this movie?')) {
+                    e.preventDefault();
+                }
+            };
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users - Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/src/public/style.css">
+    <style>
+        table {
+            width: 100%;
+            max-width: 900px;
+            margin: 2rem auto;
+            border-collapse: collapse;
+            background: #232323cc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid #444;
+            text-align: left;
+        }
+        th {
+            background: #1c1c1c;
+            color: #ff9800;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <span style="margin-right:auto;color:#ff9800;">Admin: <%= adminName %></span>
+        <a href="/admin/users" style="color:#ff9800;">All Users</a>
+        <a href="/admin/movieinfo">All Movies</a>
+        <a href="/admin/logout">Logout</a>
+    </nav>
+    <div class="center-container">
+        <div class="main-title">All Users</div>
+        <% if (alert) { %>
+            <div style="color: #ff9800; margin-bottom: 1rem;"><%= alert %></div>
+        <% } %>
+        <% if (typeof deleteAlert !== "undefined" && deleteAlert) { %>
+            <div style="color: #ff9800; margin-bottom: 1rem;"><%= deleteAlert %></div>
+        <% } %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>City</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(function(u) { %>
+                    <tr>
+                        <td><%= u.user_name %></td>
+                        <td><%= u.user_email %></td>
+                        <td><%= u.user_contact %></td>
+                        <td><%= u.user_city || "" %></td>
+                        <td>
+                            <form action="/admin/users/delete/<%= u.user_id %>" method="POST" style="display:inline;" class="delete-user-form">
+                                <button type="submit" style="background:#e65100;color:#fff;border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.querySelectorAll('.delete-user-form').forEach(function(form) {
+            form.onsubmit = function(e) {
+                if (!confirm('Are you sure you want to delete this user?')) {
+                    e.preventDefault();
+                }
+            };
+        });
+    </script>
+</body>
+</html>

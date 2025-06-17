@@ -2,8 +2,8 @@ const db = require("../config/db");
 
 // Register a new user
 exports.createUser = (user, callback) => {
-    const sql = "INSERT INTO userinfo (user_name, user_password, user_email, user_contact) VALUES (?, ?, ?, ?)";
-    db.query(sql, [user.name, user.password, user.email, user.mobile], callback);
+    const sql = "INSERT INTO userinfo (user_name, user_password, user_email, user_contact, user_city) VALUES (?, ?, ?, ?, ?)";
+    db.query(sql, [user.name, user.password, user.email, user.mobile, user.city], callback);
 };
 
 // Find user by email (for login)
