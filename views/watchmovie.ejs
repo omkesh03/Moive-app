@@ -5,81 +5,7 @@
     <title>Watch <%= movie.movie_title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/src/public/style.css">
-    <style>
-        body {
-            background: #181818;
-        }
-        .watch-movie-container {
-            max-width: 900px;
-            margin: 2rem auto;
-            background: #232323cc;
-            border-radius: 14px;
-            padding: 2.5rem 2rem 2rem 2rem;
-            text-align: center;
-            box-shadow: 0 4px 32px rgba(0,0,0,0.18);
-        }
-        .watch-movie-title {
-            color: #ff9800;
-            font-size: 2.1rem;
-            margin-bottom: 1.5rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 8px #000;
-        }
-        .watch-movie-video,
-        .watch-movie-iframe {
-            width: 100%;
-            max-width: 720px;
-            aspect-ratio: 16/9;
-            border-radius: 12px;
-            background: #111;
-            margin: 0 auto 1.5rem auto;
-            display: block;
-            border: none;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.18);
-        }
-        .movie-meta {
-            color: #ff9800;
-            font-size: 1.1rem;
-            margin-bottom: 1.2rem;
-        }
-        .movie-desc {
-            color: #fff;
-            font-size: 1.07rem;
-            margin-bottom: 1.5rem;
-            background: rgba(30,30,30,0.7);
-            padding: 1rem 1.2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .back-btn {
-            background: #ff9800;
-            color: #fff;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-bottom: 1.5rem;
-            margin-right: 1rem;
-            transition: background 0.2s;
-        }
-        .back-btn:hover {
-            background: #e65100;
-        }
-        @media (max-width: 900px) {
-            .watch-movie-container {
-                padding: 1.2rem 0.5rem;
-            }
-            .watch-movie-title {
-                font-size: 1.3rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/src/public/watchmovie.css">
 </head>
 <body>
     <nav class="navbar">
@@ -93,14 +19,12 @@
             <div class="watch-movie-title"><%= movie.movie_title %></div>
             <% if (movie.movie_watch_link) { %>
                 <% if (movie.movie_watch_link.includes("youtube.com") || movie.movie_watch_link.includes("youtu.be")) { %>
-                    <!-- YouTube embed -->
                     <iframe class="watch-movie-iframe"
                         src="https://www.youtube.com/embed/<%= movie.movie_watch_link.split('v=')[1] ? movie.movie_watch_link.split('v=')[1].split('&')[0] : movie.movie_watch_link.split('/').pop() %>"
                         allowfullscreen
                         allow="autoplay; encrypted-media">
                     </iframe>
                 <% } else { %>
-                    <!-- Generic video file -->
                     <video class="watch-movie-video" controls>
                         <source src="<%= movie.movie_watch_link %>">
                         Your browser does not support the video tag.

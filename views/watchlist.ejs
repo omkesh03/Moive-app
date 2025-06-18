@@ -5,20 +5,7 @@
     <title><%= userName %>'s Watchlist - Movie Recommendation System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/src/public/style.css">
-    <style>
-        .movie-img-thumb {
-            width: 90px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 6px;
-            margin-right: 1.2rem;
-            background: #222;
-        }
-        .movie-list-item {
-            display: flex;
-            align-items: flex-start;
-        }
-    </style>
+    <link rel="stylesheet" href="/src/public/watchlist.css">
 </head>
 <body>
     <nav class="navbar">
@@ -32,12 +19,12 @@
         <% if (alert) { %>
             <div style="color: #ff9800; margin-bottom: 1rem;"><%= alert %></div>
         <% } %>
-        <ul style="list-style:none;padding:0;width:100%;max-width:700px;margin:auto;">
+        <ul class="watchlist-ul">
             <% if (movies.length === 0) { %>
                 <li style="color:#ff9800;text-align:center;">No movies in your watchlist.</li>
             <% } else { %>
                 <% movies.forEach(function(m) { %>
-                    <li class="movie-list-item" style="background:#232323cc;padding:1rem;margin:1rem 0;border-radius:8px;display:flex;align-items:center;">
+                    <li class="movie-list-item">
                         <img class="movie-img-thumb" src="<%= m.movie_image ? m.movie_image : '/src/public/default-movie.png' %>" alt="Movie Image" onerror="this.src='/src/public/default-movie.png'">
                         <div style="flex:1;">
                             <h3 style="margin:0 0 0.5rem 0;">
@@ -45,7 +32,7 @@
                             </h3>
                         </div>
                         <form action="/watchlist/remove/<%= m.m_id %>" method="POST" style="margin-left:1rem;">
-                            <button type="submit" style="background:#e65100;color:#fff;border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer;">Remove</button>
+                            <button type="submit" class="remove-btn">Remove</button>
                         </form>
                     </li>
                 <% }) %>

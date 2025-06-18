@@ -1,0 +1,37 @@
+.watchlist-ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 700px;
+    margin: auto;
+}
+.movie-list-item {
+    background: #232323cc;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+.movie-img-thumb {
+    width: 90px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 1.2rem;
+    background: #222;
+}
+.remove-btn {
+    background: #e65100;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+.remove-btn:hover {
+    background: #b71c1c;
+}

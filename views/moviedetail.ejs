@@ -5,78 +5,7 @@
     <title><%= movie.movie_title %> - Details</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/src/public/style.css">
-    <style>
-        .movie-detail-flex {
-            display: flex;
-            flex-direction: row;
-            gap: 2rem;
-            max-width: 900px;
-            margin: 2rem auto 0 auto;
-            background: #232323cc;
-            border-radius: 12px;
-            padding: 2rem;
-            align-items: flex-start;
-        }
-        .movie-trailer-col {
-            flex: 1 1 340px;
-            min-width: 300px;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .movie-trailer-iframe, .movie-trailer-video {
-            width: 100%;
-            min-height: 210px;
-            max-width: 400px;
-            aspect-ratio: 16/9;
-            border-radius: 10px;
-            border: none;
-            background: #111;
-            margin-bottom: 1.2rem;
-        }
-        .movie-detail-col {
-            flex: 2 1 400px;
-            min-width: 250px;
-        }
-        .movie-detail-title {
-            color: #ff9800;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-        .movie-detail-label {
-            color: #ff9800;
-            font-weight: bold;
-        }
-        .movie-detail-row {
-            margin-bottom: 0.7rem;
-        }
-        .movie-detail-btns {
-            margin-top: 1.5rem;
-        }
-        .movie-detail-btns button,
-        .movie-detail-btns form button {
-            margin-right: 1rem;
-            background: #ff9800;
-            color: #fff;
-            border: none;
-            padding: 0.7rem 1.3rem;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        @media (max-width: 900px) {
-            .movie-detail-flex {
-                flex-direction: column;
-                padding: 1rem;
-            }
-            .movie-trailer-col, .movie-detail-col {
-                max-width: 100%;
-                min-width: 0;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/src/public/moviedetail.css">
 </head>
 <body>
     <nav class="navbar">
@@ -90,14 +19,12 @@
             <div class="movie-trailer-col">
                 <% if (movie.movie_trailer_link) { %>
                     <% if (movie.movie_trailer_link.includes("youtube.com") || movie.movie_trailer_link.includes("youtu.be")) { %>
-                        <!-- YouTube embed -->
                         <iframe class="movie-trailer-iframe"
                             src="https://www.youtube.com/embed/<%= movie.movie_trailer_link.split('v=')[1] ? movie.movie_trailer_link.split('v=')[1].split('&')[0] : movie.movie_trailer_link.split('/').pop() %>"
                             allowfullscreen
                             allow="autoplay; encrypted-media">
                         </iframe>
                     <% } else { %>
-                        <!-- Generic video or iframe -->
                         <video class="movie-trailer-video" controls>
                             <source src="<%= movie.movie_trailer_link %>">
                             Your browser does not support the video tag.
@@ -135,3 +62,4 @@
     <% } %>
 </body>
 </html>
+            
