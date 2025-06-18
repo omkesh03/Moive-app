@@ -1,6 +1,6 @@
 const User = require("../model/usermodel");
 const jwt = require("jsonwebtoken");
-const SECRET = "your_jwt_secret"; // Use env in production
+const SECRET = "your_jwt_secret"; 
 
 // Handle registration POST
 exports.register = (req, res) => {

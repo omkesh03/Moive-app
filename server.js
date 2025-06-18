@@ -208,6 +208,28 @@ app.post("/movie/:id/watchlist", (req, res) => {
     });
 });
 
+// Remove movie from user's watchlist
+app.post("/watchlist/remove/:id", (req, res) => {
+    if (!req.session || !req.session.userName) {
+        return res.status(403).send("<script>alert('Please login to modify your watchlist.');window.location='/login';</script>");
+    }
+    const movieId = req.params.id;
+    db.query("SELECT user_id FROM userinfo WHERE user_name = ?", [req.session.userName], (err, userRows) => {
+        if (err || !userRows || userRows.length === 0) {
+            return res.redirect("/watchlist");
+        }
+        const userId = userRows[0].user_id;
+        db.query(
+            "DELETE FROM watchlist_table WHERE user_id = ? AND m_id = ?",
+            [userId, movieId],
+            (err2) => {
+                // Optionally, you can add an alert message to the watchlist page
+                res.redirect("/watchlist");
+            }
+        );
+    });
+});
+
 // Watchlist page (shows movies in user's watchlist)
 app.get("/watchlist", (req, res) => {
     if (!req.session || !req.session.userName) {
@@ -253,6 +275,46 @@ app.get("/search", (req, res) => {
         } else {
             res.render("index", { movies: movies || [], search: query });
         }
+    });
+});
+
+// Watch movie page (shows movie_watch_link video)
+app.get("/movie/:id/watch", (req, res) => {
+    if (!req.session || !req.session.userName) {
+        return res.status(403).send("<script>alert('Please login to watch movies.');window.location='/login';</script>");
+    }
+    Movie.getMovieById(req.params.id, (err, results) => {
+        if (err || !results || results.length === 0) {
+            return res.status(404).send("Movie not found");
+        }
+        res.render("watchmovie", { movie: results[0] });
+    });
+});
+
+// User ratings page
+app.get("/myratings", (req, res) => {
+    if (!req.session || !req.session.userName) {
+        return res.status(403).send("<script>alert('Please login to view your ratings.');window.location='/login';</script>");
+    }
+    db.query("SELECT user_id FROM userinfo WHERE user_name = ?", [req.session.userName], (err, userRows) => {
+        if (err || !userRows || userRows.length === 0) {
+            return res.render("myratings", { userName: req.session.userName, ratings: [], alert: "User not found." });
+        }
+        const userId = userRows[0].user_id;
+        db.query(
+            `SELECT r.rating, r.review, m.movie_title, m.m_id, m.movie_image
+             FROM rating_table r
+             JOIN movieinfo m ON r.m_id = m.m_id
+             WHERE r.user_id = ?
+             ORDER BY r.rating DESC, m.movie_title ASC`,
+            [userId],
+            (err2, ratings) => {
+                if (err2) {
+                    return res.render("myratings", { userName: req.session.userName, ratings: [], alert: "Database error." });
+                }
+                res.render("myratings", { userName: req.session.userName, ratings: ratings || [], alert: null });
+            }
+        );
     });
 });
 

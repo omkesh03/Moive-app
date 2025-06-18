@@ -1,4 +1,3 @@
-<!-- filepath: views/index.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +18,101 @@
             display: flex;
             align-items: flex-start;
         }
+        .movie-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            justify-content: flex-start;
+        }
+        .movie-card-4 {
+            background: #232323cc;
+            border-radius: 10px;
+            margin: 1rem 0 0 0;
+            width: calc(25% - 1.2rem);
+            min-width: 180px;
+            max-width: 210px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .movie-card-inner {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .movie-title {
+            margin: 1rem 0 0.5rem 0;
+            color: #ff9800;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        .movie-img-thumb {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 0 0 10px 10px;
+            background: #222;
+            transition: transform 0.25s;
+        }
+        .movie-card-hover {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(30,30,30,0.97);
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.2s;
+            padding: 1.2rem 1rem 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            z-index: 2;
+        }
+        .movie-img-hover {
+            width: 90%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 0.7rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+            transform: scale(1.08);
+            transition: transform 0.2s;
+        }
+        .movie-card-4:hover .movie-card-hover,
+        .movie-card-4:focus .movie-card-hover {
+            opacity: 1;
+        }
+        .movie-card-4:hover .movie-img-thumb,
+        .movie-card-4:focus .movie-img-thumb {
+            transform: scale(1.08);
+            filter: blur(2px) brightness(0.7);
+        }
+        .movie-card-hover h3 {
+            margin: 0 0 0.5rem 0;
+            color: #ff9800;
+            font-size: 1.1rem;
+        }
+        .movie-card-hover p {
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        @media (max-width: 900px) {
+            .movie-card-4 { width: calc(33.33% - 1.2rem); }
+        }
+        @media (max-width: 700px) {
+            .movie-card-4 { width: calc(50% - 1.2rem); }
+        }
+        @media (max-width: 500px) {
+            .movie-card-4 { width: 100%; min-width: 0; }
+        }
     </style>
 </head>
 <body>
@@ -32,27 +126,155 @@
             <input type="text" name="q" placeholder="Search movies..." value="<%= typeof search !== 'undefined' ? search : '' %>" style="padding:0.6rem 1rem;border-radius:6px;border:none;width:250px;max-width:70vw;">
             <button type="submit" style="margin-left:0.5rem;padding:0.6rem 1.2rem;border-radius:6px;border:none;background:#ff9800;color:#fff;font-weight:bold;cursor:pointer;">Search</button>
         </form>
-        <div style="max-height:420px;overflow-y:auto;width:100%;max-width:700px;margin:auto;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.10);background:rgba(35,35,35,0.1);">
-            <ul id="movieList" style="list-style:none;padding:0;margin:0;">
+        <div style="max-height:420px;overflow-y:auto;width:100%;max-width:1200px;margin:auto;border-radius:10px;box-shadow:0 2px 16px rgba(0,0,0,0.10);background:rgba(35,35,35,0.1);padding:2rem;">
+            <div class="movie-hotstar-grid">
                 <% if (movies.length === 0) { %>
-                    <li style="color:#ff9800;text-align:center;">No movies found.</li>
+                    <div style="color:#ff9800;text-align:center;width:100%;">No movies found.</div>
                 <% } else { %>
-                    <% movies.forEach(function(m) { %>
-                        <li class="movie-card movie-list-item" style="background:#232323cc;padding:1rem;margin:1rem;border-radius:8px;cursor:pointer;">
-                            <img class="movie-img-thumb" src="<%= m.movie_image || '/src/public/default-movie.png' %>" alt="Movie Image" onerror="this.src='/src/public/default-movie.png'">
-                            <div>
-                                <h3 style="margin:0 0 0.5rem 0;"><%= m.movie_title %></h3>
-                                <p style="margin:0 0 0.5rem 0;"><%= m.movie_desc || "" %></p>
-                                <small>Category: <%= m.movie_category || "N/A" %> | Language: <%= m.movie_language || "N/A" %></small>
+                    <% movies.forEach(function(m) { 
+                        let desc = m.movie_desc || "";
+                        let shortDesc = desc.length > 120 ? desc.substring(0, 117) + "..." : desc;
+                    %>
+                        <div class="hotstar-card" tabindex="0">
+                            <div class="hotstar-card-img-wrap">
+                                <img class="hotstar-card-img" src="<%= m.movie_image || '/src/public/default-movie.png' %>" alt="Movie Image" onerror="this.src='/src/public/default-movie.png'">
+                                <div class="hotstar-card-hover">
+                                    <!-- Remove movie title on hover -->
+                                    <div class="hotstar-card-desc"><%= shortDesc %></div>
+                                    <div class="hotstar-card-meta">
+                                        <span><%= m.movie_category || "N/A" %></span> | 
+                                        <span><%= m.movie_language || "N/A" %></span>
+                                    </div>
+                                </div>
                             </div>
-                        </li>
+                            <div class="hotstar-card-title-static"><%= m.movie_title %></div>
+                        </div>
                     <% }) %>
                 <% } %>
-            </ul>
+            </div>
         </div>
     </div>
+    <style>
+        .movie-hotstar-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem 1.5rem;
+            justify-content: flex-start;
+        }
+        .hotstar-card {
+            background: #232323;
+            border-radius: 18px;
+            width: calc(25% - 1.5rem);
+            min-width: 220px;
+            max-width: 260px;
+            margin: 1rem 0 0 0;
+            position: relative;
+            overflow: visible;
+            cursor: pointer;
+            transition: box-shadow 0.2s, transform 0.3s cubic-bezier(.23,1.01,.32,1);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .hotstar-card:hover,
+        .hotstar-card:focus {
+            transform: scale(1.06);
+            z-index: 10;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+        }
+        .hotstar-card-img-wrap {
+            width: 100%;
+            position: relative;
+            border-radius: 18px 18px 0 0;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+            background: #181818;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .hotstar-card-img {
+            width: 100%;
+            height: 220px;
+            border-radius: 18px 18px 0 0;
+            background: #222;
+            transition: filter 0.2s;
+            z-index: 1;
+            object-fit: contain;
+            display: block;
+        }
+        .hotstar-card-title-static {
+            margin: 0.7rem 0 0 0;
+            color: #ff9800;
+            font-size: 1.13rem;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 0.5px;
+            min-height: 2.2em;
+            padding: 0 0.5rem;
+        }
+        .hotstar-card-hover {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20,20,20,0.97);
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.25s;
+            padding: 1.2rem 1rem 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start;
+            text-align: left;
+            z-index: 2;
+        }
+        .hotstar-card-title {
+            color: #ff9800;
+            font-size: 1.18rem;
+            font-weight: bold;
+            margin-bottom: 0.7rem;
+            text-shadow: 1px 1px 8px #000;
+            background: none;
+        }
+        .hotstar-card-desc {
+            font-size: 1.01rem;
+            margin-bottom: 0.7rem;
+            color: #fff;
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            max-height: none;
+            overflow: visible;
+            text-overflow: initial;
+            white-space: pre-line;
+        }
+        .hotstar-card-meta {
+            font-size: 0.97rem;
+            color: #ff9800;
+            margin-top: 0.5em;
+        }
+        .hotstar-card:hover .hotstar-card-hover,
+        .hotstar-card:focus .hotstar-card-hover {
+            opacity: 1;
+        }
+        .hotstar-card:hover .hotstar-card-img,
+        .hotstar-card:focus .hotstar-card-img {
+            filter: brightness(0.7) blur(1.5px);
+        }
+        @media (max-width: 1200px) {
+            .hotstar-card { width: calc(33.33% - 1.5rem); }
+        }
+        @media (max-width: 900px) {
+            .hotstar-card { width: calc(50% - 1.5rem); }
+        }
+        @media (max-width: 600px) {
+            .hotstar-card { width: 100%; min-width: 0; }
+        }
+    </style>
     <script>
-        document.querySelectorAll('.movie-card').forEach(function(card) {
+        document.querySelectorAll('.hotstar-card').forEach(function(card) {
             card.onclick = function() {
                 alert("Please login to view movie details.");
             };

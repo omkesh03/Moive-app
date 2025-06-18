@@ -1,4 +1,3 @@
--- Add an image column to the movieinfo table for storing image URLs or paths
 
 ALTER TABLE movieinfo
 ADD COLUMN movie_image VARCHAR(500) DEFAULT NULL;
